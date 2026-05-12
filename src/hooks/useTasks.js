@@ -30,16 +30,23 @@ export function useTasks() {
 
   const addTask = async (formData) => {
     const { data } = await createTask(formData)
-    const newTask = normalize(data.task ?? data)
+    const newTask = normalize(data.task ?? data.data ?? data)
     setTasks((prev) => [newTask, ...prev])
     toast.success('¡Tarea creada!')
+  }
+
+  const editTask = async (id, formData) => {
+    const { data } = await updateTask(id, formData)
+    const updatedTask = normalize(data.task ?? data.data ?? data)
+    setTasks((prev) => prev.map((t) => (t._id === id ? updatedTask : t)))
+    toast.success('Tarea actualizada')
   }
 
   const toggleTask = async (id) => {
     const task = tasks.find((t) => t._id === id)
     try {
       const { data } = await updateTask(id, { completed: !task.completed })
-      const updatedTask = normalize(data.task ?? data)
+      const updatedTask = normalize(data.task ?? data.data ?? data)
       setTasks((prev) => prev.map((t) => (t._id === id ? updatedTask : t)))
       toast.success(updatedTask.completed ? '¡Tarea completada! ✓' : 'Tarea marcada como pendiente')
     } catch {
@@ -65,5 +72,5 @@ export function useTasks() {
     completed: tasks.filter((t) =>  t.completed).length,
   }
 
-  return { tasks: filteredTasks, counts, loading, filter, setFilter, addTask, toggleTask, removeTask }
+  return { tasks: filteredTasks, counts, loading, filter, setFilter, addTask, editTask, toggleTask, removeTask }
 }

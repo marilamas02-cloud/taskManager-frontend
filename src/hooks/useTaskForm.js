@@ -3,13 +3,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { taskSchema } from '../schemas/taskSchema'
 import toast from 'react-hot-toast'
 
-export function useTaskForm(onSuccess) {
+export function useTaskForm(onSuccess, defaultValues = {}) {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm({ resolver: zodResolver(taskSchema) })
+  } = useForm({ resolver: zodResolver(taskSchema), defaultValues })
 
   const onSubmit = async (data) => {
     try {

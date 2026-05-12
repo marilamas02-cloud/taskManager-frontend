@@ -3,7 +3,7 @@ import styles from './TaskCard.module.css'
 import ConfirmModal from './ConfirmModal'
 import { formatDate, isOverdue } from '../utils/formatDate'
 
-export default function TaskCard({ task, onToggle, onDelete }) {
+export default function TaskCard({ task, onToggle, onDelete, onEdit }) {
   const [showConfirm, setShowConfirm] = useState(false)
   const [deleting, setDeleting]       = useState(false)
   const [toggling, setToggling]       = useState(false)
@@ -48,6 +48,14 @@ export default function TaskCard({ task, onToggle, onDelete }) {
                 {toggling ? <SpinIcon /> : <CheckIcon />}
               </button>
               <button
+                className={`${styles.iconBtn} ${styles.editBtn}`}
+                onClick={() => onEdit(task)}
+                aria-label="Editar tarea"
+                title="Editar"
+              >
+                <PencilIcon />
+              </button>
+              <button
                 className={`${styles.iconBtn} ${styles.deleteBtn}`}
                 onClick={() => setShowConfirm(true)}
                 aria-label="Eliminar tarea"
@@ -90,6 +98,15 @@ function CheckIcon() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="20 6 9 17 4 12" />
+    </svg>
+  )
+}
+
+function PencilIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
     </svg>
   )
 }

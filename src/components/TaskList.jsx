@@ -14,7 +14,7 @@ const EMPTY_MESSAGES = {
   completed: { title: 'Nada completado aún',       subtitle: 'Completa una tarea para verla aquí.' },
 }
 
-export default function TaskList({ tasks, counts, loading, filter, setFilter, onToggle, onDelete }) {
+export default function TaskList({ tasks, counts, loading, filter, setFilter, onToggle, onDelete, onEdit }) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.filters}>
@@ -44,6 +44,7 @@ export default function TaskList({ tasks, counts, loading, filter, setFilter, on
               task={task}
               onToggle={onToggle}
               onDelete={onDelete}
+              onEdit={onEdit}
             />
           ))}
         </div>

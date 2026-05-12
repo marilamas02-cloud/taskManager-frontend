@@ -1,17 +1,22 @@
 import { useTaskForm } from '../hooks/useTaskForm'
+import { toInputDate } from '../utils/formatDate'
 import InputField from './InputField'
 import Button from './Button'
 import styles from './TaskForm.module.css'
 
-export default function TaskForm({ onAdd, onClose }) {
-  const { register, handleSubmit, onSubmit, errors, isSubmitting } = useTaskForm(onAdd)
+export default function TaskForm({ task, onAdd, onClose }) {
+  const isEditing = Boolean(task)
+  const defaultValues = isEditing
+    ? { title: task.title, description: task.description, dueDate: toInputDate(task.dueDate) }
+    : {}
+  const { register, handleSubmit, onSubmit, errors, isSubmitting } = useTaskForm(onAdd, defaultValues)
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <div className={styles.headerLeft}>
-          <PlusIcon />
-          <h2 className={styles.title}>Nueva tarea</h2>
+          {isEditing ? <EditIcon /> : <PlusIcon />}
+          <h2 className={styles.title}>{isEditing ? 'Editar tarea' : 'Nueva tarea'}</h2>
         </div>
         <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar formulario">
           <CloseIcon />
@@ -61,11 +66,20 @@ export default function TaskForm({ onAdd, onClose }) {
             Cancelar
           </Button>
           <Button variant="primary" type="submit" loading={isSubmitting} disabled={isSubmitting}>
-            Crear tarea
+            {isEditing ? 'Guardar cambios' : 'Crear tarea'}
           </Button>
         </div>
       </form>
     </div>
+  )
+}
+
+function EditIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+    </svg>
   )
 }
 

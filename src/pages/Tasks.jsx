@@ -8,12 +8,23 @@ import styles from './Tasks.module.css'
 
 export default function Tasks() {
   const { user, logout }                                              = useAuth()
-  const { tasks, counts, loading, filter, setFilter, addTask, toggleTask, removeTask } = useTasks()
-  const [showForm, setShowForm]                                       = useState(false)
+  const { tasks, counts, loading, filter, setFilter, addTask, editTask, toggleTask, removeTask } = useTasks()
+  const [showForm, setShowForm]       = useState(false)
+  const [editingTask, setEditingTask] = useState(null)
 
   const handleAdd = async (data) => {
     await addTask(data)
     setShowForm(false)
+  }
+
+  const handleUpdate = async (data) => {
+    await editTask(editingTask._id, data)
+    setEditingTask(null)
+  }
+
+  const handleCloseForm = () => {
+    setShowForm(false)
+    setEditingTask(null)
   }
 
   return (
@@ -41,7 +52,7 @@ export default function Tasks() {
                 : `${counts.pending} pendiente${counts.pending !== 1 ? 's' : ''} · ${counts.completed} completada${counts.completed !== 1 ? 's' : ''}`}
             </p>
           </div>
-          {!showForm && (
+          {!showForm && !editingTask && (
             <Button variant="primary" onClick={() => setShowForm(true)}>
               <PlusIcon />
               Nueva tarea
@@ -49,8 +60,12 @@ export default function Tasks() {
           )}
         </div>
 
-        {showForm && (
-          <TaskForm onAdd={handleAdd} onClose={() => setShowForm(false)} />
+        {(showForm || editingTask) && (
+          <TaskForm
+            task={editingTask}
+            onAdd={editingTask ? handleUpdate : handleAdd}
+            onClose={handleCloseForm}
+          />
         )}
 
         <TaskList
@@ -61,6 +76,7 @@ export default function Tasks() {
           setFilter={setFilter}
           onToggle={toggleTask}
           onDelete={removeTask}
+          onEdit={setEditingTask}
         />
       </div>
     </main>
