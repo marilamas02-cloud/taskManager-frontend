@@ -1,5 +1,8 @@
 import axiosInstance from './axiosInstance'
 
+export const registerRequest = (userData) =>
+  axiosInstance.post('/api/register', userData)
+
 export const loginRequest = (credentials) =>
   axiosInstance.post('/api/login', credentials)
 
