@@ -12,8 +12,15 @@ export function useTasks() {
     setLoading(true)
     try {
       const { data } = await getTasks()
-      setTasks(Array.isArray(data) ? data : (data.tasks ?? []))
-    } catch {
+      console.log('[fetchTasks] respuesta del backend:', data)
+      const list =
+        Array.isArray(data)       ? data       :
+        Array.isArray(data.tasks) ? data.tasks :
+        Array.isArray(data.data)  ? data.data  :
+        []
+      setTasks(list)
+    } catch (err) {
+      console.error('[fetchTasks] error:', err)
       toast.error('Error al cargar las tareas')
     } finally {
       setLoading(false)
@@ -24,7 +31,8 @@ export function useTasks() {
 
   const addTask = async (formData) => {
     const { data } = await createTask(formData)
-    setTasks((prev) => [data, ...prev])
+    const newTask = data.task ?? data
+    setTasks((prev) => [newTask, ...prev])
     toast.success('¡Tarea creada!')
   }
 
@@ -32,8 +40,9 @@ export function useTasks() {
     const task = tasks.find((t) => t._id === id)
     try {
       const { data } = await updateTask(id, { completed: !task.completed })
-      setTasks((prev) => prev.map((t) => (t._id === id ? data : t)))
-      toast.success(data.completed ? '¡Tarea completada! ✓' : 'Tarea marcada como pendiente')
+      const updatedTask = data.task ?? data
+      setTasks((prev) => prev.map((t) => (t._id === id ? updatedTask : t)))
+      toast.success(updatedTask.completed ? '¡Tarea completada! ✓' : 'Tarea marcada como pendiente')
     } catch {
       toast.error('Error al actualizar la tarea')
     }
