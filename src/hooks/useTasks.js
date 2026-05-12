@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import toast from 'react-hot-toast'
 import { getTasks, createTask, updateTask, deleteTask } from '../services/taskService'
 
+const normalize = (task) => ({ ...task, _id: task._id ?? task.id })
 
 export function useTasks() {
   const [tasks, setTasks]     = useState([])
@@ -17,7 +18,7 @@ export function useTasks() {
         Array.isArray(data.tasks) ? data.tasks :
         Array.isArray(data.data)  ? data.data  :
         []
-      setTasks(list)
+      setTasks(list.map(normalize))
     } catch {
       toast.error('Error al cargar las tareas')
     } finally {
@@ -29,7 +30,7 @@ export function useTasks() {
 
   const addTask = async (formData) => {
     const { data } = await createTask(formData)
-    const newTask = data.task ?? data
+    const newTask = normalize(data.task ?? data)
     setTasks((prev) => [newTask, ...prev])
     toast.success('¡Tarea creada!')
   }
@@ -38,7 +39,7 @@ export function useTasks() {
     const task = tasks.find((t) => t._id === id)
     try {
       const { data } = await updateTask(id, { completed: !task.completed })
-      const updatedTask = data.task ?? data
+      const updatedTask = normalize(data.task ?? data)
       setTasks((prev) => prev.map((t) => (t._id === id ? updatedTask : t)))
       toast.success(updatedTask.completed ? '¡Tarea completada! ✓' : 'Tarea marcada como pendiente')
     } catch {
