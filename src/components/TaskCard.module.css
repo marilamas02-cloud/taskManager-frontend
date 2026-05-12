@@ -1,0 +1,221 @@
+.card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  overflow: hidden;
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition), opacity var(--transition);
+  animation: cardIn 0.3s ease both;
+}
+
+.card:hover {
+  border-color: rgba(108, 99, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.done {
+  opacity: 0.65;
+}
+
+.done:hover {
+  opacity: 0.85;
+}
+
+.overdueCard {
+  border-color: rgba(255, 107, 138, 0.25);
+}
+
+/* left colored stripe */
+.indicator {
+  width: 4px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, var(--accent) 0%, #8b5cf6 100%);
+  transition: background var(--transition);
+}
+
+.indicatorDone {
+  background: linear-gradient(180deg, var(--success) 0%, #22d3a0 100%);
+}
+
+.body {
+  flex: 1;
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.topRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent-glow);
+  transition: background var(--transition);
+}
+
+.dotDone {
+  background: var(--success);
+  box-shadow: 0 0 6px rgba(107, 255, 184, 0.35);
+}
+
+.title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--transition), text-decoration var(--transition);
+}
+
+.done .title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.iconBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+  color: var(--text-secondary);
+  background: transparent;
+}
+
+.iconBtn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.iconBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.toggleBtn:hover:not(:disabled) {
+  background: rgba(108, 99, 255, 0.15);
+  color: var(--accent);
+}
+
+.toggleActive {
+  background: rgba(107, 255, 184, 0.1);
+  color: var(--success);
+}
+
+.toggleActive:hover:not(:disabled) {
+  background: rgba(107, 255, 184, 0.2);
+  color: var(--success);
+}
+
+.deleteBtn:hover:not(:disabled) {
+  background: rgba(255, 107, 138, 0.12);
+  color: var(--error);
+}
+
+.description {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color var(--transition);
+}
+
+.done .description {
+  color: var(--text-muted);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.dueDate {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: color var(--transition);
+}
+
+.overdueDate {
+  color: var(--error);
+}
+
+.overdueTag {
+  background: rgba(255, 107, 138, 0.12);
+  color: var(--error);
+  border: 1px solid rgba(255, 107, 138, 0.2);
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.badgePending {
+  background: rgba(108, 99, 255, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(108, 99, 255, 0.2);
+}
+
+.badgeDone {
+  background: rgba(107, 255, 184, 0.08);
+  color: var(--success);
+  border: 1px solid rgba(107, 255, 184, 0.2);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
