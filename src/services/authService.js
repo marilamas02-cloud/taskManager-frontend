@@ -1,13 +1,9 @@
-import axiosInstance from './axiosInstance'
+import { login, register } from '../api/auth'
 
-export const registerRequest = (userData) =>
-  axiosInstance.post('/api/register', userData)
+export const loginRequest    = (credentials) => login(credentials)
+export const registerRequest = (userData)    => register(userData)
 
-export const loginRequest = (credentials) =>
-  axiosInstance.post('/api/login', credentials)
-
-export const logoutRequest = () =>
-  axiosInstance.post('/api/logout')
-
-export const verifyTokenRequest = () =>
-  axiosInstance.get('/api/verify-token')
+// JWT-only backend: logout and verify are handled client-side.
+// Invalid tokens are caught by the 401 interceptor in src/api/axios.js.
+export const logoutRequest      = () => Promise.resolve()
+export const verifyTokenRequest = () => Promise.resolve()
