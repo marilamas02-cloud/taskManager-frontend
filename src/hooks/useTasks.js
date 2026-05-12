@@ -12,15 +12,13 @@ export function useTasks() {
     setLoading(true)
     try {
       const { data } = await getTasks()
-      console.log('[fetchTasks] respuesta del backend:', data)
       const list =
         Array.isArray(data)       ? data       :
         Array.isArray(data.tasks) ? data.tasks :
         Array.isArray(data.data)  ? data.data  :
         []
       setTasks(list)
-    } catch (err) {
-      console.error('[fetchTasks] error:', err)
+    } catch {
       toast.error('Error al cargar las tareas')
     } finally {
       setLoading(false)
